@@ -1,35 +1,33 @@
-from stack.stack import *
-from lexer.lexical_analysis import *
+from sys import *
+from os import *
 
-def execute(filename):
-    stack = Stack()
-    lexer = Lexer(filename)
-    tokens = lexer.tokenize()
+from compiler.compiler import Compiler
 
-    for token in tokens:
-        if token == 'ADD':
-            operand2 = stack.pop()
-            operand1 = stack.pop()
+examples_path : str = 'examples/input'
 
-            result = operand1 + operand2
-            stack.push(result)
+filenames : list = []
 
-        elif token == 'PUSH':
-            tokens.pop()
-            operand3 = int(tokens.pop[0])
-            stack.push(operand3)
+compiler : Compiler
 
-        elif token == 'STOP':
-            print('oi')
-            break
 
-    print(stack.items)
-filename = 'sam1.sam'
-# s : Stack = Stack()
 
-# s.pop()
+if __name__ == '__main__':
 
-# print(s.items)
+    if len(argv) == 1:
 
-execute(filename)
+        for path in listdir(examples_path):
 
+            filenames.append(path)
+
+    
+    elif len(argv) > 1:
+
+        filenames = argv.copy()
+
+        filenames.pop()
+
+
+    
+    compiler = Compiler(filenames)
+
+    compiler.compile()
