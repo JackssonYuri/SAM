@@ -1,38 +1,112 @@
-
-from compiler import Compiler
-from compiler.stack import Stack
-from operations.arithmetic_operations import Arithmetic
+from .jump_operations import Jump
+from .pointer_operations import Pointer
+from .manipulation_operations import Manipulation
+from .compare_operations import Compare
+from .logical_operatitions import Logical
+from .memory_operations import Memory
+from .arithmetic_operations import Arithmetic
+from compiler.instructions import Instructions
 
 
 class Operations:
 
-    stack : Stack
+    instructions : Instructions
+
     arithmetic : Arithmetic
+    logical : Logical
+    compare : Compare
+    memory : Memory
+    manipulation : Manipulation
+    pointer : Pointer
+    jump : Jump
+
     filetokens : list
+    linetokens : list
+    jump_tokens : list = ['JUMP', 'JUMPC', 'JSR', 'JUMPIND']
 
-    def __init__(self, stack : Stack, filetokens : list) -> None:
+
+    def __init__(self, instructions : Instructions, filetokens : list) -> None:
         
-        self.stack = stack
+        self.instructions = instructions
         self.filetokens = filetokens
-        self.arithmetic = Arithmetic(self.stack, '')
+
+    def execute(self) -> Instructions:
+
+        i : int = 0
+
+        while i < len(self.filetokens):
+
+            self.linetokens = self.filetokens[i]
+
+            if self.linetokens[0] == 'STOP':
+               break
+
+            if self.linetokens[0] in self.jump_tokens:
+
+                self.jump = Jump(self.instructions, self.filetokens, self.linetokens)
+
+                if self.jump.jump_index() != -1:
+                    i = self.jump.jump_index()
 
 
-    def execute(self):
+            
 
-        for linetoken in self.filetokens():
+            self.arithmetic = Arithmetic(self.instructions, self.linetokens)
+            self.logical = Logical(self.instructions, self.linetokens)
+            self.compare = Compare(self.instructions, self.linetokens)
+            self.memory = Memory(self.instructions, self.linetokens)
+            self.manipulation = Manipulation(self.instructions, self.linetokens)
+            self.pointer = Pointer(self.instructions, self.linetokens)
 
-            for token in linetoken:
 
-                self.arithmetic = Arithmetic(self.stack, token)
+            
+            self.instructions.sp = len(self.instructions.items)
+            i = i + 1
 
-#                elif tokens == 'PUSH':
-#                    self.compiler.tokens.pop()
-#                    operand3 = int(self.compiler.tokens.pop[0])
-#                    self.compiler.stack.push(operand3)
 
-#                elif tokens == 'STOP':
-#                    print('oi')
-#                    break
+        
+        return self.instructions
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+       
+
+
+                    
+
+            
+
+            
+
+                    
+    
+
+
+
+
+                
+
+
+
+                
+
+
+                    
+
+        
+
+
+
 
 
 

@@ -1,6 +1,6 @@
 from compiler.instructions import Instructions
 
-class Arithmetic:
+class Compare:
 
     instructions : Instructions
     instructions_temp : Instructions
@@ -22,91 +22,123 @@ class Arithmetic:
         self.operand2 = 0
         self.result = 0
 
-        
-        if self.linetokens[0] == 'ADD':
-            self.instructions = self.add()
-
-        elif self.linetokens[0] == 'SUB':
-            self.instructions = self.sub()
-
-        elif self.linetokens[0] == 'TIMES':
-            self.instructions = self.times()
-
-        elif self.linetokens[0] == 'DIV':
-            self.instructions = self.div()
 
         
+        if self.linetokens[0] == "GREATER":
+            self.instructions = self.greater()
+
+        elif self.linetokens[0] == "LESS":
+            self.instructions = self.less()
+
+        elif self.linetokens[0] == "EQUAL":
+            self.instructions = self.equal()
+
+        elif self.linetokens[0] == "ISNIL":
+            self.instructions = self.isnil()
+
+
+
+    def greater(self) -> Instructions:
+
+        result : int = -1
+
+        instructions_temp : Instructions = Instructions()
+
+        instructions_temp = self.instructions
+
+        operand1 = int(instructions_temp.pop())
+        operand2 = int(instructions_temp.pop())
+
+        if operand2 > operand1:
+
+            result = 1
+
+        elif operand2 <= operand1:
+
+            result = 0
+
+
+        instructions_temp.push(result)
+
+        instructions_temp.pc = instructions_temp.pc + 1
+
+        return instructions_temp
+    
+
+    def less(self) -> Instructions:
+
+        result : int = -1
+
+        instructions_temp : Instructions = Instructions()
+
+        instructions_temp = self.instructions
+
+        operand1 = int(instructions_temp.pop())
+        operand2 = int(instructions_temp.pop())
+
+        if operand2 < operand1:
+
+            result = 1
+
+        elif operand2 >= operand1:
+            
+            result = 0
+
+
+        instructions_temp.push(result)
+
+        instructions_temp.pc = instructions_temp.pc + 1
+
+        return instructions_temp
+    
+    def equal(self) -> Instructions:
+
+        result : int = -1
+
+        instructions_temp : Instructions = Instructions()
+
+        instructions_temp = self.instructions
+
+        operand1 = int(instructions_temp.pop())
+        operand2 = int(instructions_temp.pop())
+
+        if operand2 == operand1:
+
+            result = 1
+
+        elif operand2 != operand1:
+
+            result = 0
+
+
+        instructions_temp.push(result)
+
+        instructions_temp.pc = instructions_temp.pc + 1
 
         
-    def add(self) -> Instructions:
+
+        return instructions_temp
+    
+    def isnil(self) -> Instructions:
 
         instructions_temp : Instructions = Instructions()
 
         instructions_temp = self.instructions
 
         operand1 = int(instructions_temp.pop())
-        operand2 = int(instructions_temp.pop())
 
-        result = int(operand2 + operand1)
+        if operand1 == 0:
 
-        instructions_temp.push(result)
+            result = 1
 
-        instructions_temp.pc = instructions_temp.pc + 1
+        elif operand1 != 0:
 
-        return instructions_temp
-    
-
-    def sub(self) -> Instructions:
-
-        instructions_temp : Instructions = Instructions()
-
-        instructions_temp = self.instructions
-
-        operand1 = int(instructions_temp.pop())
-        operand2 = int(instructions_temp.pop())
-
-        result = int(operand2 - operand1)
-
-        instructions_temp.push(result)
+            result = 0
 
         instructions_temp.pc = instructions_temp.pc + 1
 
-        return instructions_temp
-    
-    def times(self) -> Instructions:
-
-        instructions_temp : Instructions = Instructions()
-
-        instructions_temp = self.instructions
-
-        operand1 = int(instructions_temp.pop())
-        operand2 = int(instructions_temp.pop())
-
-        result = int(operand2 * operand1)
-
         instructions_temp.push(result)
 
-        instructions_temp.pc = instructions_temp.pc + 1
+        
 
         return instructions_temp
-       
-    
-    def div(self) -> Instructions:
-
-        instructions_temp : Instructions = Instructions()
-
-        instructions_temp = self.instructions
-
-        operand1 = int(instructions_temp.pop())
-        operand2 = int(instructions_temp.pop())
-
-        result = int(operand2 / operand1)
-
-        instructions_temp.push(result)
-
-        instructions_temp.pc = instructions_temp.pc + 1
-
-        return instructions_temp
-
-
-    
