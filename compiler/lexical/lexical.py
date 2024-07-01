@@ -1,22 +1,25 @@
-from lexical.lexical_analysis import Analysis
+from .lexical_analysis import Analysis
 
 class Lexical:
 
     filename : str
     lexer : Analysis
-    filetokens : list = []
+    tokens : list
 
     def __init__(self, filename : str):
 
         self.filename = filename
 
         self.lexer = Analysis(filename)
+
+        self.tokens = []
         
     
     def filetokens(self) -> list:
 
-        tokens : list = self.lexer.tokenize()
+        self.tokens = self.lexer.tokenize()
 
-        self.filetokens.append(tokens)
+        self.lexer.check_comments()
+        self.lexer.check_labels()
 
-        return self.filetokens
+        return self.tokens
