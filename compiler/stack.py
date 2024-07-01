@@ -15,13 +15,19 @@ class Stack:
         if not self.isEmpty(): 
             return self.items.pop()
         else:
-            raise IndexError("Não há elementos na lista")
+            raise IndexError('Não há elementos na lista')
 
     def peek(self) -> object:
         if not self.isEmpty(): 
             return self.items[len(self.items) - 1]
         else:
-            raise IndexError("Não há elementos na lista")
+            raise IndexError('Não há elementos na lista')
 
     def size(self) -> int:
         return len(self.items)
+    
+    def copy(self) -> list:
+
+        self.items_aux = self.items.copy()
+        
+        return self.items_aux
