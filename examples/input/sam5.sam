@@ -1,0 +1,27 @@
+//Estrutura de repetição
+// int i=0, soma = 0;
+// for (i = 0; i < 10; i++){
+//	soma = soma + i;
+//}
+// return soma;
+
+	PUSHIMM 0
+	PUSHIMM 0
+FOR:
+	PUSHABS 1
+	PUSHIMM 10
+	LESS
+	ISNIL
+	JUMPC ENDFOR
+	PUSHABS 0
+	PUSHABS 1
+	ADD
+	STOREABS 0
+	PUSHABS 1
+	PUSHIMM 1
+	ADD
+	STOREABS 1
+	JUMP FOR
+ENDFOR:
+	ADDSP -1
+	STOP
